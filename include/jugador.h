@@ -7,6 +7,10 @@ Version:0.1
 
 Descricion y funciones del jugador
 Cada jugador tiene siempre 3 cartas
+
+diferentes tipos de partida:
+1.Un usuario 
+2.maquina aleatorio
 */
 
 #include<iostream>
@@ -22,6 +26,7 @@ private:
     vector<carta> c3;
     string nombre;//nombre jugador
     int puntos;//los puntos que tiene el jugador
+	int tipo;
 
 
 
@@ -32,23 +37,26 @@ public:
     jugador() {
         nombre=" ";
         puntos=0;
+		tipo=0;
     }
     //constructor
-    jugador(const carta & a,const carta & b,const carta & c,string n) {
+    jugador(const carta & a,const carta & b,const carta & c,string n,int t) {
         c3.push_back(a);
         c3.push_back(b);
         c3.push_back(c);
         nombre=n;
         puntos=0;
+		tipo=t;
         //chequeamos traS crear jugador
         check();
     }
-    void set_inicial(const carta & a,const carta & b,const carta & c,string n) {
+    void set_inicial(const carta & a,const carta & b,const carta & c,string n,int t) {
         c3.push_back(a);
         c3.push_back(b);
         c3.push_back(c);
         nombre=n;
         puntos=0;
+		tipo=t;
         //chequeamos traS crear jugador
         check();
     }
@@ -120,39 +128,45 @@ private:
 
     //si sale el oponente
     int elegir_carta(const carta  & muestra,const carta & oponente) {
-        cout<<"			La muestra es:";
-        muestra.mostrar();
-        cout<<"\nEl oponente ha tirado ";
-        oponente.mostrar();
-        mostrar();
-        cout<<"\nElige una carta ";
-        int i;
-        cin>>i;
-        while(i<0 || i>c3.size()-1) { //indice solo puede ser 0,1,2
-            //puede que necesitemos cin.clear y cin.ignore
-            cout<<"Elige una carta";
-            cin>>i;
-        }
+		int i;
+		if(tipo==1){
+		    cout<<"			La muestra es:";
+		    muestra.mostrar();
+		    cout<<"\nEl oponente ha tirado ";
+		    oponente.mostrar();
+		    mostrar();
+		    cout<<"\nElige una carta ";
+		    cin>>i;
+		    while(i<0 || i>c3.size()-1) { //indice solo puede ser 0,1,2
+		        cout<<"Elige una carta ";
+		        cin>>i;
+		    }
+		}
+		else /*tipo==2*/{
+			i=rand()%(c3.size());
+		}
         return i;
 
 
 
     }
     int elegir_carta(const carta  & muestra) {
-        cout<<"			La muestra es:";
-        muestra.mostrar();
-        mostrar();
-        cout<<"\nElige una carta ";
-        int i;
-        cin>>i;
-        while(i<0 || i>c3.size()-1) { //indice solo puede ser 0,1,2
-            //puede que necesitemos cin.clear y cin.ignore
-            cout<<"Elige una carta";
-            cin>>i;
-        }
+		int i;
+		if(tipo==1){
+		    cout<<"			La muestra es:";
+		    muestra.mostrar();
+		    mostrar();
+		    cout<<"\nElige una carta ";
+		    cin>>i;
+		    while(i<0 || i>c3.size()-1) { //indice solo puede ser 0,1,2
+		        cout<<"Elige una carta ";
+		        cin>>i;
+		    }
+		}
+		else /*tipo==2*/{
+			i=rand()%(c3.size());
+		}
         return i;
-
-
     }
 
     //cogemos una de las 3 cartas, asique el indice solo puede ser 0,1,2
@@ -177,6 +191,7 @@ private:
     }
     //compruebo que tiene 3 cartas
     void check() {
+		if(tipo<1 || tipo>2) cout<<"ERROR: tipo no existe"<<endl;
         if(c3.size()!=3) cout<<"ERROR: no tiene 3 cartas"<<endl;
 
     }
